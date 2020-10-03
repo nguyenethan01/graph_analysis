@@ -1,18 +1,17 @@
+#file to find all connected components in a graph
+import sys
+sys.setrecursionlimit(100000)
 class Graph: 
-      
-    # init function to declare class variables 
+    # init function 
     def __init__(self,nodes): 
         self.nodes = nodes  
         self.adj = [[] for i in range(nodes)] 
   
     def DFSUtil(self, temp, v, visited): 
-  
         # Mark the current vertex as visited 
         visited[v] = True
-  
         # Store the vertex to list 
         temp.append(v) 
-  
         # Repeat for all vertices adjacent 
         # to this vertex v 
         for i in self.adj[v]: 
@@ -27,33 +26,42 @@ class Graph:
         self.adj[w].append(v) 
   
     # Method to retrieve connected components 
-    # in an undirected graph 
     def connectedComponents(self): 
         visited = [] 
-        cc = [] 
+        connected = [] 
         for i in range(self.nodes): 
             visited.append(False) 
         for v in range(self.nodes): 
             if visited[v] == False: 
                 temp = [] 
-                cc.append(self.DFSUtil(temp, v, visited)) 
-        return cc 
+                connected.append(self.DFSUtil(temp, v, visited)) 
+        return connected 
   
+def run(filename):
+    file = open(filename,'r')
+    nodes = int(file.readline())
+    graph = Graph(nodes)
+    for i in file:
+        numbers = i.split(' ')
+        a,b = int(numbers[0]),int(numbers[1])
+        graph.addEdge(a,b)
+
+    #print connected components
+    connected_components = graph.connectedComponents()
+    print("The Following are Connected Components:")
+    print(connected_components)
+    
+    #print number of connected components
+    count = 0 
+    for i in connected_components:
+        count+=1
+    print('\n')
+    print(f"There are {count} connected components")
+    #close file
+    file.close()
+
+
+
 # Driver Code 
 if __name__=="__main__": 
-  
-
-  file = open('n1000.txt','r')
-  nodes = int(file.readline())
-  print(nodes)
-  g=Graph(nodes)
-  for i in file:
-    a,b = int(i.split(' ')[0]), int(i.split(' ')[1])
-    g.addEdge(a,b)
-  cc = g.connectedComponents() 
-  print("Following are connected components") 
-  print(cc) 
-  count = 0
-  for i in cc:
-    count+=1
-  print(count)
+    run('n10000.txt')
