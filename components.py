@@ -64,4 +64,4 @@ def run(filename):
 
 # Driver Code 
 if __name__=="__main__": 
-    run('n10000.txt')
+    run('n1000.txt')
